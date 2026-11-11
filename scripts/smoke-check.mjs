@@ -273,6 +273,12 @@ async function smoke() {
     for (const r of failed) console.error(`  - ${r.name}${r.detail ? ` (${r.detail})` : ''}`)
     process.exit(1)
   }
+  // Exit explicitly. Several checks read only a response's status and leave
+  // its body unread, which keeps that connection — and so the process — open
+  // until fetch's body timeout (5 minutes). Against a live CDN that outlasted
+  // the workflow step's own 5-minute limit and failed a deploy whose checks
+  // had all passed.
+  process.exit(0)
 }
 
 smoke().catch((err) => {
