@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ffc.site-profile.v1",
+  "siteId": "https://hephzibahdelightglobalmission.org",
+  "siteName": "Hephzibah Delight Global Mission",
+  "canonicalUrl": "https://hephzibahdelightglobalmission.org",
+  "organization": {
+    "name": "Hephzibah Delight Global Mission",
+    "ein": "43-2582519",
+    "nonprofitStatus": null
+  },
+  "supportedBy": {
+    "name": "Free For Charity",
+    "url": "https://freeforcharity.org"
+  },
+  "template": {
+    "family": "ffc-single-page-template",
+    "repository": "FreeForCharity/FFC-IN-FFC_Single_Page_Template",
+    "branch": "main"
+  },
+  "contacts": {
+    "primaryEmail": "hephzibahdelightglobalmission@gmail.com",
+    "vulnerabilityDisclosureUrl": "https://hephzibahdelightglobalmission.org/vulnerability-disclosure-policy"
+  },
+  "profileEndpoints": {
+    "siteProfile": "https://hephzibahdelightglobalmission.org/site-profile.json",
+    "securityTxt": "https://hephzibahdelightglobalmission.org/security.txt",
+    "sitemap": "https://hephzibahdelightglobalmission.org/sitemap.xml",
+    "robots": "https://hephzibahdelightglobalmission.org/robots.txt"
+  },
+  "trust": {
+    "generatedBy": "Free For Charity template factory",
+    "hosting": "github-pages-static-export",
+    "requiresHttps": true,
+    "managesSecrets": false,
+    "productionDnsManagedHere": false,
+    "requiredChecks": [
+      "pnpm run format:check",
+      "pnpm run lint",
+      "pnpm run check:drift",
+      "pnpm run check:site-config",
+      "pnpm run test:coverage",
+      "pnpm run build",
+      "pnpm run verify:build",
+      "pnpm run check:bundle",
+      "pnpm run test:e2e",
+      "pnpm run audit:high"
+    ]
+  }
+}
