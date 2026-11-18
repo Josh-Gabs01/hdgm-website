@@ -781,10 +781,14 @@ jobs:
               if (s.kind === 'page') { donationChecks.push({ ...s, status: 200 }); continue; }
               try {
                 const r = await fetch(s.url.startsWith('http') ? s.url : 'https:' + s.url, { method: 'GET', redirect: 'follow' });
-                const { classifyDonationResponse } = require(process.env.GITHUB_WORKSPACE + '/scripts/classify-donation-response.cjs');
+                const { classifyDonationResponse, describeDonationResponse } = require(process.env.GITHUB_WORKSPACE + '/scripts/classify-donation-response.cjs');
                 const providerBody = r.status === 403 ? await r.text() : '';
-                const verification = classifyDonationResponse({ provider: s.provider, status: r.status, server: r.headers.get('server') || '', body: providerBody });
+                const observed = { provider: s.provider, status: r.status, server: r.headers.get('server') || '', body: providerBody, cfMitigated: r.headers.get('cf-mitigated') || '' };
+                const verification = classifyDonationResponse(observed);
                 donationChecks.push({ ...s, status: r.status, verification });
+                // Say what a non-2xx/3xx probe actually received, so a bot
+                // challenge and a real outage can be told apart from the log.
+                if (verification !== 'reachable') console.log(`Donation probe received: ${describeDonationResponse(observed)}`);
                 if (verification === 'automation-blocked') {
                   console.warn(`::warning::Zeffy blocked the automated donation probe with a Cloudflare challenge. Donation availability is UNVERIFIED by this run: ${s.url}`);
                 } else if (verification === 'unreachable') {
