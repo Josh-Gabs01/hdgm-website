@@ -9,7 +9,13 @@ import { FaXTwitter } from 'react-icons/fa6'
 import type { IconType } from 'react-icons'
 import { SaleShareOptOut } from '@/components/sale-share-opt-out'
 
-import { isPending, mailtoHref, publishedPhone, siteConfig } from '@/lib/site.config'
+import {
+  isPending,
+  mailtoHref,
+  publishedPhone,
+  siteConfig,
+  taxStatusNotice,
+} from '@/lib/site.config'
 import { assetPath } from '@/lib/assetPath'
 import { eventsSectionVisible } from '@/lib/events/visibility'
 import {
@@ -44,6 +50,7 @@ const Footer: React.FC = () => {
   const guidestarDirectUrl = siteConfig.guidestar.directProfileUrl.trim()
   // Trim so whitespace-only config behaves like empty (link/clause self-hides).
   const taxStatusLabel = siteConfig.taxStatusLabel.trim()
+  const statusNotice = taxStatusNotice()
   // Same predicate the Events section uses to self-hide, so the quick-link
   // never points at a missing #events anchor.
   const showEventsLink = eventsSectionVisible()
@@ -335,6 +342,8 @@ const Footer: React.FC = () => {
 
       {/* Bottom Bar */}
       <div className="mt-12 py-6 px-4 border-t border-gray-800 text-center text-[18px] font-[500] w-full aria-font">
+        {/* Where the organization's tax-exempt status stands, for donors. */}
+        {statusNotice && <p className="mb-3">{statusNotice}</p>}
         <p>
           © {currentYear} All Rights Are Reserved by {siteConfig.name}
           {taxStatusLabel ? ` ${taxStatusLabel}` : ''}
