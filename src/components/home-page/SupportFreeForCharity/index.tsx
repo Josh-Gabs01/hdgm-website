@@ -8,6 +8,7 @@ import {
   isPending,
   isSupportingOrgSite,
   siteConfig,
+  taxStatusNotice,
 } from '@/lib/site.config'
 
 interface ExtendedIframeProps extends IframeHTMLAttributes<HTMLIFrameElement> {
@@ -35,6 +36,7 @@ const Index = () => {
   // no contact email (e.g. both pending) there is no link to offer at all.
   const hasDonateLink = /^https:/i.test(donateLink) || siteConfig.contactEmail.trim() !== ''
   const donationPending = isPending('donationUrl')
+  const statusNotice = taxStatusNotice()
   const donationFormProps: ExtendedIframeProps = {
     title: 'Donation form powered by Zeffy',
     style: donationFormStyle,
@@ -106,6 +108,12 @@ const Index = () => {
                 text, next to the email fallback (see PendingField). */}
             {!embedUrl && donationPending && (
               <PendingNote className="text-center text-[18px] text-gray-700 lato-font" />
+            )}
+            {/* Where the organization's tax-exempt status stands, for donors. */}
+            {statusNotice && (
+              <p className="max-w-[500px] text-center text-[18px] font-[700] text-gray-800 lato-font">
+                {statusNotice}
+              </p>
             )}
           </div>
         </div>

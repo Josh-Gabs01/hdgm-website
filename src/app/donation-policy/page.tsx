@@ -8,6 +8,7 @@ import {
   legalContact,
   publishedPhone,
   siteConfig,
+  taxStatusNotice,
 } from '@/lib/site.config'
 import ContactEmail from '@/components/ui/ContactEmail'
 import ContactLocation, { hasContactLocation } from '@/components/ui/ContactLocation'
@@ -48,6 +49,7 @@ export default function DonationPolicy() {
   // may call a donation tax-deductible.
   const taxExempt = siteConfig.taxStatusLabel.trim() !== ''
   const phone = publishedPhone()
+  const statusNotice = taxStatusNotice()
   // The EIN clause: the EIN itself, the pending placeholder while the charity
   // has not supplied it, or nothing when it has none (see PendingField).
   const ein = siteConfig.ein.trim()
@@ -77,12 +79,19 @@ export default function DonationPolicy() {
               about how the law applies to your gift.
             </p>
           ) : (
-            <p>
-              {name}
-              {einClause} has not yet received IRS recognition as a 501(c)(3) organization, so
-              donations may not be tax-deductible. Please consult a tax advisor before claiming a
-              deduction.
-            </p>
+            <>
+              {statusNotice && (
+                <p>
+                  <strong>{statusNotice}</strong>
+                </p>
+              )}
+              <p>
+                {name}
+                {einClause} has not yet received IRS recognition as a 501(c)(3) organization, so
+                donations may not be tax-deductible. Please consult a tax advisor before claiming a
+                deduction.
+              </p>
+            </>
           )}
 
           <h2 className={h2}>Use of Donations</h2>

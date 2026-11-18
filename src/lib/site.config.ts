@@ -182,6 +182,14 @@ export type SiteConfig = {
    */
   taxStatusLabel: string
   /**
+   * A sentence telling donors where the organization's tax-exempt status
+   * stands while `taxStatusLabel` is empty, e.g. that its 501(c)(3)
+   * application is pending with the IRS. Shown in the Donate section, the
+   * donation policy and the footer. Omit (or leave empty) to show nothing;
+   * clear it when the determination letter arrives and `taxStatusLabel` is set.
+   */
+  taxStatusNotice?: string
+  /**
    * Visibility flags for home-page sections whose default content is
    * FFC-specific marketing rather than per-charity data. A rebranded fork sets
    * these false so the section self-hides instead of showing FFC placeholders.
@@ -299,6 +307,8 @@ export const siteConfig: SiteConfig = {
   // recognition, and any label here makes the donation policy state that
   // donations are tax-deductible. Set it once the determination letter arrives.
   taxStatusLabel: '',
+  taxStatusNotice:
+    "Hephzibah Delight Global Mission's application for 501(c)(3) tax-exempt status is pending with the IRS.",
   sections: {
     showEndowment: true,
     showPrograms: true,
@@ -396,6 +406,15 @@ export function legalContact(kind: 'default' | 'cookie' = 'default'): {
     if (email?.trim()) return { name: s.legalContactName?.trim() || null, email: email.trim() }
   }
   return { name: null, email: siteConfig.contactEmail.trim() }
+}
+
+/**
+ * The notice about a tax-exempt status that is not yet held, or null. Never
+ * shown once `taxStatusLabel` claims the status, so the two cannot disagree.
+ */
+export function taxStatusNotice(): string | null {
+  if (siteConfig.taxStatusLabel.trim() !== '') return null
+  return siteConfig.taxStatusNotice?.trim() || null
 }
 
 /** True when `field` is listed in `siteConfig.pending`. */
